@@ -1,6 +1,4 @@
-<div align="center">
 # Tiny games
-</div>
 
 A collection of tiny games
 
