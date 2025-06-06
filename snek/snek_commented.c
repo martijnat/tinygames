@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
         srand(time(NULL));
         int food_x = GRID_PIXEL*(1+(rand())%(GRID_W-2));
         int food_y= GRID_PIXEL*(1+(rand())%(GRID_H-2));
-        SDL_Window* window = SDL_CreateWindow("snak",
+        SDL_Window* window = SDL_CreateWindow("snek",
                                               SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                               WIDTH, HEIGHT, 0);
 

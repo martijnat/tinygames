@@ -1,7 +1,7 @@
-all: games
+games: snek.bin
 
-games:
-	true
+snek.bin: snek/snek_commented.c
+	gcc snek/snek_commented.c -o snek.bin  -lSDL2
 
 readme:
 	cat README.md.header > README.md
