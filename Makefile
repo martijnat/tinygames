@@ -1,7 +1,4 @@
-games: snek.bin
+all:
+	gcc snek/snek_nocomment.c -o snek.bin  -lSDL2
+	cat snek/snek_nocomment.c | qrencode -o snek_qr.png
 
-snek.bin: snek/snek_commented.c
-	gcc snek/snek_commented.c -o snek.bin  -lSDL2
-
-readme:
-	cat README.md.header > README.md
