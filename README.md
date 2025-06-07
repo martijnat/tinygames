@@ -4,11 +4,16 @@ A collection of tiny games. I have tried to keep the source (without comments) s
 
 # Games
 
+## Vier
+![vier screenshot](vier_screenshot.png)
+
+Fill up lines using tetronimoes, don't let the screen fill up.
+
 ## Snek
 ![snek screenshot](snek_screenshot.png)
 
-## Vier
-![vier screenshot](vier_screenshot.png)
+Collect red dots and grow larger, dont bump into walls or yourself
+
 
 
 # Instructions
