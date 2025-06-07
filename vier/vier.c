@@ -12,8 +12,8 @@
 #define WIDTH (GRID_W * GRID_PIXEL)
 #define HEIGHT (GRID_H * GRID_PIXEL)
 #define NUM_PIECES 7
-#define DROP_TIMEOUT (FPS/4)
-#define MOVE_TIMEOUT (FPS/15)
+#define DROP_TIMEOUT (FPS/5)
+#define MOVE_TIMEOUT (FPS/20)
 #define ROTATE_TIMEOUT (FPS/10)
 
 // Define tetromino shapes (I, J, L, O, S, T, Z)
@@ -174,6 +174,10 @@ int main(int argc, char* argv[]) {
 
     // Keyboard input
     const Uint8* keystate = SDL_GetKeyboardState(NULL);
+    int drop_y=current_y;
+    while (!check_collision(current_piece, current_rotation, current_x, drop_y + 1, grid)){
+      drop_y++;
+    }
     if(input_timeout<=0) {
       if (keystate[SDL_SCANCODE_LEFT] && !check_collision(current_piece, current_rotation, current_x - 1, current_y, grid))
         current_x--,input_timeout=MOVE_TIMEOUT;
@@ -188,12 +192,13 @@ int main(int argc, char* argv[]) {
             input_timeout=ROTATE_TIMEOUT;
           }
       }
+      drop_y=current_y;
+      while (!check_collision(current_piece, current_rotation, current_x, drop_y + 1, grid)){
+        drop_y++;
+      }
       if (keystate[SDL_SCANCODE_SPACE]) {
         // Hard drop
-        while (!check_collision(current_piece, current_rotation, current_x, current_y + 1, grid)) {
-          current_y++;
-        }
-        lock_piece(current_piece, current_rotation, current_x, current_y, grid);
+        lock_piece(current_piece, current_rotation, current_x, drop_y, grid);
         input_timeout=DROP_TIMEOUT;
         total_lines += clear_lines(grid);
         current_piece = next_piece;
@@ -239,9 +244,9 @@ int main(int argc, char* argv[]) {
         if (grid[y][x] != 0) {
           int piece = grid[y][x] - 1;
           draw_pixel(renderer, x * GRID_PIXEL, y * GRID_PIXEL,
-                     colors[(piece+total_lines/10)%7][0], colors[(piece+total_lines/10)%7][1], colors[(piece+total_lines/10)%7][2]);
+                     colors[piece][0], colors[piece][1], colors[piece][2]);
         } else {
-          draw_pixel(renderer, x * GRID_PIXEL, y * GRID_PIXEL, 40, 40, 40);
+          draw_pixel(renderer, x * GRID_PIXEL, y * GRID_PIXEL, 29,32,33);
         }
       }
     }
@@ -250,12 +255,10 @@ int main(int argc, char* argv[]) {
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
         if (shapes[current_piece][current_rotation][i][j]) {
-          int x_pos = current_x + j;
-          int y_pos = current_y + i;
-          if (x_pos >= 0 && x_pos < GRID_W && y_pos >= 0 && y_pos < GRID_H) {
-            draw_pixel(renderer, x_pos * GRID_PIXEL, y_pos * GRID_PIXEL,
-                       colors[current_piece][0], colors[current_piece][1], colors[current_piece][2]);
-          }
+          draw_pixel(renderer, (current_x + j) * GRID_PIXEL, (drop_y + i) * GRID_PIXEL,80,73,69);
+          draw_pixel(renderer, (current_x + j) * GRID_PIXEL, (current_y + i) * GRID_PIXEL,
+                     colors[current_piece][0], colors[current_piece][1], colors[current_piece][2]);
+
         }
       }
     }
