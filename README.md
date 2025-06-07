@@ -5,8 +5,11 @@ A collection of tiny games. I have tried to keep the source (without comments) s
 # Games
 
 ## Snek
-![snek Screenshot](snek_screenshot.png)
-![snek QR](snek_qr.png)
+![snek screenshot](snek_screenshot.png)
+
+## Vier
+![vier screenshot](vier_screenshot.png)
+
 
 # Instructions
 
