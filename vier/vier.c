@@ -16,7 +16,6 @@
 #define MOVE_TIMEOUT (FPS/20)
 #define ROTATE_TIMEOUT (FPS/10)
 
-// Define tetromino shapes (I, J, L, O, S, T, Z)
 const int shapes[NUM_PIECES][4][4][4] = {
   // I piece
   {
@@ -69,16 +68,10 @@ const int shapes[NUM_PIECES][4][4][4] = {
   }
 };
 
-// Define colors for each piece type (RGB)
+// gruvbox colors
 const int colors[NUM_PIECES][3] = {
-  {142,192,124},   // I: cyan
-  {131,165,152},     // J: blue
-  {254,128,25},   // L: orange
-  {250,189,47},   // O: yellow
-  {184,187,38},     // S: green
-  {211,134,155},   // T: purple
-  {251,73,52}      // Z: red
-};
+  {142,192,124}, {131,165,152}, {254,128,25}, {250,189,47},
+  {184,187,38}, {211,134,155}, {251,73,52}};
 
 void draw_pixel(SDL_Renderer* R, int x, int y, int r, int g, int b) {
   SDL_SetRenderDrawColor(R, (r*3)/4, (g*3)/4, (b*3)/4, 255);
@@ -201,6 +194,7 @@ int main(int argc, char* argv[]) {
         lock_piece(current_piece, current_rotation, current_x, drop_y, grid);
         input_timeout=DROP_TIMEOUT;
         total_lines += clear_lines(grid);
+        gravity_counter=-DROP_TIMEOUT;
         current_piece = next_piece;
         next_piece = rand() % NUM_PIECES;
         current_rotation = 0;
@@ -216,7 +210,7 @@ int main(int argc, char* argv[]) {
 
     // Gravity handling
     gravity_counter++;
-    if (gravity_counter >= gravity_delay) {
+    if (gravity_counter >= (gravity_delay-total_lines)) {
       gravity_counter = 0;
       if (!check_collision(current_piece, current_rotation, current_x, current_y + 1, grid)) {
         current_y++;
